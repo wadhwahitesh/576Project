@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using Unity.AI.Navigation;
 
 public class Turret : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class Turret : MonoBehaviour
     private Vector3 projectile_starting_pos;
     private float projectile_velocity;
     private bool claire_is_accessible;
+    private NavMeshAgent agent;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +27,10 @@ public class Turret : MonoBehaviour
         projectile_starting_pos = new Vector3(0.0f, 0.0f, 0.0f);
         claire_is_accessible = false;
         StartCoroutine("Spawn");
+        agent = GetComponent<NavMeshAgent>();
+
+        agent.baseOffset = 0f; // Adjust this to set the base height of the agent
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
     }
 
     // Update is called once per frame
@@ -40,7 +47,7 @@ public class Turret : MonoBehaviour
 
         direction_from_turret_to_claire = claire_centroid - turret_centroid;
         direction_from_turret_to_claire.Normalize();
-
+        agent.SetDestination(claire_position);
         float epsilon = 0.1f; // Adjust as needed
         float delta_pos = float.MaxValue;
 
@@ -75,7 +82,7 @@ public class Turret : MonoBehaviour
                 float angle_to_rotate_turret = Mathf.Rad2Deg * Mathf.Atan2(shooting_direction.x, shooting_direction.z);
                 transform.eulerAngles = new Vector3(0.0f, angle_to_rotate_turret, 0.0f);
                 Vector3 current_turret_direction = new Vector3(Mathf.Sin(Mathf.Deg2Rad * transform.eulerAngles.y), 1.1f, Mathf.Cos(Mathf.Deg2Rad * transform.eulerAngles.y));
-                projectile_starting_pos = transform.position + 1.1f * current_turret_direction;  // estimated position of the turret's front of the cannon
+                projectile_starting_pos = transform.position + 0.18f * current_turret_direction;  // estimated position of the turret's front of the cannon
                 claire_is_accessible = true;
             }
             else

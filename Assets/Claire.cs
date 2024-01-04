@@ -23,8 +23,6 @@ public class Claire : MonoBehaviour {
     public Canvas canvas;
     public TMPro.TextMeshProUGUI finalText;
     
-
-	// Use this for initialization
 	void Start ()
     {
         animation_controller = GetComponent<Animator>();
@@ -40,22 +38,7 @@ public class Claire : MonoBehaviour {
         currentVelocity = 0;
         isDead = false;
         accelerationTime = 2f;
-        //GameObject uiCanvasObject = GameObject.Find("UiCanvas");
-        //canvas = uiCanvasObject.GetComponent<Canvas>();
-        //finalText = canvas.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-
- 
-       
-        //canvas.gameObject.SetActive(false);
-        
-        
-
-        //Transform textTransform = canvas.transform.FindWithTag("StatusText");
-        //finalText = textTransform.GetComponent<Text>();
-        //finalText = uiCanvasObject.GetComponentInChildren<StatusText> ();
     }
-
-    // Update is called once per frame
 
     void setParameterTrue(string param)
     {
@@ -71,30 +54,6 @@ public class Claire : MonoBehaviour {
     void Update()
     {
 
-        //if (!isDead)
-        //    text.text = "Lives left: " + num_lives;
-        //else
-        //    text.text = "Dead!";
-        
-
-
-
-        ////////////////////////////////////////////////
-        // WRITE CODE HERE:
-        // (a) control the animation controller (animator) based on the keyboard input. Adjust also its velocity and moving direction. 
-        // (b) orient (i.e., rotate) your character with left/right arrow [do not change the character's orientation while jumping]
-        // (c) check if the character is out of lives, call the "death" state, let the animation play, and restart the game
-        // (d) check if the character reached the target (display the message "you won", freeze the character (idle state), provide an option to restart the game
-        // feel free to add more fields in the class        
-        ////////////////////////////////////////////////
-        ///
-
-        //if (Input.GetKey(KeyCode.UpArrow))
-        //{
-        //    // Set the bool parameter to true
-        //    animation_controller.
-        //}
-
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
@@ -109,16 +68,10 @@ public class Claire : MonoBehaviour {
         }
         IEnumerator WaitAndDoSomething(float time)
         {
-            // Wait for 3 seconds
             yield return new WaitForSeconds(time);
             finalText.text = "You are Dead!";
             finalText.color = Color.red;
             canvas.gameObject.SetActive(true);
-
-            // Code to execute after waiting for 3 seconds
-            //Debug.Log("Waited for 3 seconds. Now do something!");
-
-            // Additional code related to handling death...
         }
         IEnumerator WaitBeforeFinish()
         {
@@ -150,11 +103,6 @@ public class Claire : MonoBehaviour {
                     character_controller.Move(moveDirection * Time.deltaTime);
 
                 }
-                //else
-                //{
-                    
-                //    animation_controller.SetBool("IsWalkForward", false);
-                //}
 
                 else if (Input.GetKey(KeyCode.DownArrow) && !(Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand)))
                 {
@@ -165,10 +113,6 @@ public class Claire : MonoBehaviour {
                     Vector3 moveDirection = transform.forward * verticalInput * currentVelocity;
                     character_controller.Move(moveDirection * Time.deltaTime);
                 }
-                //else
-                //{
-                //    animation_controller.SetBool("IsWalkBackward", false);
-                //}
 
                 else if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand)) && Input.GetKey(KeyCode.UpArrow))
                 {
@@ -179,10 +123,6 @@ public class Claire : MonoBehaviour {
                     Vector3 moveDirection = transform.forward * verticalInput * currentVelocity;
                     character_controller.Move(moveDirection * Time.deltaTime);
                 }
-                //else
-                //{
-                //    animation_controller.SetBool("IsCrouchForward", false);
-                //}
 
                 else if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand)) && Input.GetKey(KeyCode.DownArrow))
                 {
@@ -193,10 +133,6 @@ public class Claire : MonoBehaviour {
                     Vector3 moveDirection = transform.forward * verticalInput * currentVelocity;
                     character_controller.Move(moveDirection * Time.deltaTime);
                 }
-                //else
-                //{
-                //    animation_controller.SetBool("IsCrouchBackward", false);
-                //}
 
                 else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.UpArrow))
                 {
@@ -217,11 +153,6 @@ public class Claire : MonoBehaviour {
                     Vector3 moveDirection = transform.forward * verticalInput * currentVelocity;
                     character_controller.Move(moveDirection * Time.deltaTime);
                 }
-                
-                //else
-                //{
-                //    animation_controller.SetBool("IsRunForward", false);
-                //}
 
 
 
@@ -265,16 +196,7 @@ public class Claire : MonoBehaviour {
             StartCoroutine(WaitBeforeFinish());
 
         }
-        
-
-
-
-
-
-            // you don't need to change the code below (yet, it's better if you understand it). Name your FSM states according to the names below (or change both).
-            // do not delete this. It's useful to shift the capsule (used for collision detection) downwards. 
-            // The capsule is also used from turrets to observe, aim and shoot (see Turret.cs)
-            // If the character is crouching, then she evades detection. 
+    
             bool is_crouching = false;
         if ( (animation_controller.GetCurrentAnimatorStateInfo(0).IsName("Crouch Forward"))
          ||  (animation_controller.GetCurrentAnimatorStateInfo(0).IsName("Crouch Backward")) )
@@ -290,8 +212,6 @@ public class Claire : MonoBehaviour {
         {
             GetComponent<CapsuleCollider>().center = new Vector3(GetComponent<CapsuleCollider>().center.x, 0.9f, GetComponent<CapsuleCollider>().center.z);
         }
-
-        // you will use the movement direction and velocity in Turret.cs for deflection shooting 
         float xdirection = Mathf.Sin(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
         float zdirection = Mathf.Cos(Mathf.Deg2Rad * transform.rotation.eulerAngles.y);
         movement_direction = new Vector3(xdirection, 0.0f, zdirection);
@@ -300,14 +220,10 @@ public class Claire : MonoBehaviour {
             movement_direction = -movement_direction;
         }
         
-      
-
-        // character controller's move function is useful to prevent the character passing through the terrain
-        // (changing transform's position does not make these checks)
-        if (transform.position.y > 0.0f) // if the character starts "climbing" the terrain, drop her down
+        if (transform.position.y > 0.0f)
         {
             Vector3 lower_character = movement_direction * velocity * Time.deltaTime;
-            lower_character.y = -100f; // hack to force her down
+            lower_character.y = -100f;
             character_controller.Move(lower_character);
         }
         else

@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Turret
+  - Apple
+  - Claire
+  - Star
+  - Ball
   layers:
   - Default
   - TransparentFX

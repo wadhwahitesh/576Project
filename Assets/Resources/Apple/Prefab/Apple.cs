@@ -11,7 +11,11 @@ public class Apple : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {        
+
+
+    {
+        float initialScaleFactor = 0.2f; // Adjust this value as needed
+        transform.localScale = new Vector3(initialScaleFactor, initialScaleFactor, initialScaleFactor);
     }
 
     // Update is called once per frame
@@ -26,13 +30,6 @@ public class Apple : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ////////////////////////////////////////////////
-        // WRITE CODE HERE:
-        // (a) if the object collides with Claire, subtract one life from her, and destroy the apple
-        // (b) if the object collides with another apple, or its own turret that launched it (birth_turret), don't do anything
-        // (c) if the object collides with anything else (e.g., terrain, a different turret), destroy the apple
-        ////////////////////////////////////////////////
-        ///
 
         if (other.CompareTag("Player")) // Assuming Claire has the "Player" tag
         {
@@ -40,7 +37,7 @@ public class Apple : MonoBehaviour
             Claire claire = other.GetComponent<Claire>();
             if (claire != null && !claire.isDead)
             {
-                claire.num_lives = claire.num_lives - 1;
+                //claire.num_lives = claire.num_lives - 1;
                 if (claire.num_lives == 0)
                 {
                     claire.isDead = true;
